@@ -10,6 +10,16 @@ const findProductByName = async (nameToSearch) => {
   }
 };
 
+const findProductById = async (idToSearch) => {
+  try {
+    const response = await ProductModel.findProductById(idToSearch);
+    if (!response) return null;
+    return response;
+  } catch (error) {
+    return console.log(`ProductService ${error}`);
+  }
+};
+
 const create = async ({ name, quantity }) => {
   const product = await ProductModel.create(name, quantity);
   
@@ -30,9 +40,19 @@ const getById = async (id) => {
   return product;
 };
 
+const update = async (name, quantity, id) => {
+  const product = await ProductModel.update(name, quantity, id);
+
+  if (!product) return null;
+
+  return product;
+};
+
 module.exports = {
   create,
   findProductByName,
+  findProductById,
   getAll,
   getById,
+  update,
 };

@@ -30,6 +30,16 @@ const differentName = async (request, response, next) => {
   }
 };
 
+const sameId = async (request, response, next) => {
+  const { id } = request.params;
+  const productId = await ProductService.findProductById(id);
+  if (!productId) {
+    return response.status(404).json({ message: 'Product not found' });
+  }
+
+  next();
+};
+
 const withQuantity = (request, response, next) => {
   const { quantity } = request.body;
   if (quantity === undefined) {
@@ -53,6 +63,7 @@ module.exports = {
   withName,
   nameGreaterThanFour,
   differentName,
+  sameId,
   withQuantity,
   quantityIsNotString,
 };

@@ -1,5 +1,15 @@
 const connection = require('./connection');
 
+const DEZ = 10;
+
+function mapFuction(resultFromSearch) {
+  return resultFromSearch.map(({ id, name, quantity }) => ({
+    id,
+    name,
+    quantity,
+  }));
+}
+
 const findProductByName = async (nameToSearch) => {
   try {
     const query = 'SELECT name FROM StoreManager.products WHERE name = ?';
@@ -8,10 +18,21 @@ const findProductByName = async (nameToSearch) => {
     if (result.length === 0) return null;
     return result;
   } catch (error) {
-    console.log(`ProductModel ${error}`);
+    console.log(`ProductModel name ${error}`);
   }
 };
 
+const findProductById = async (idToSearch) => {
+  try {
+    const query = 'SELECT id FROM StoreManager.products WHERE id = ?';
+    const [result] = await connection.execute(query, [idToSearch]);
+    if (result.length === 0) return null;
+    return result;
+  } catch (error) {
+    console.log(`ProductModel id ${error}`);
+  }
+};
+//
 const create = async (name, quantity) => {
   const query = 'INSERT INTO StoreManager.products (name, quantity) VALUES (?, ?)';
   const [result] = await connection.execute(query, [name, quantity]);
@@ -34,18 +55,22 @@ const getById = async (idProduct) => {
   const [result] = await connection.execute(query, [idProduct]);
   if (result.length === 0) return null;
 
-  const resultMap = result.map(({ id, name, quantity }) => ({
-    id,
-    name,
-    quantity,
-  }));
+  return Object.assign(...mapFuction(result));
+};
 
-  return Object.assign(...resultMap);
+const update = async (name, quantity, parseId) => {
+  const query = 'UPDATE StoreManager.products SET name=?, quantity=? WHERE id=?';
+  await connection.execute(query, [name, quantity, parseId]);
+  const id = parseInt(parseId, DEZ);
+
+  return { id, name, quantity };
 };
 
 module.exports = {
   create,
   findProductByName,
+  findProductById,
   getAll,
   getById,
+  update,
 };

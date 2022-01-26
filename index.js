@@ -8,6 +8,7 @@ const {
   withName,
   nameGreaterThanFour,
   differentName,
+  sameId,
   withQuantity,
   quantityIsNotString,
 } = require('./middleware/findErrors');
@@ -29,6 +30,16 @@ app.post(
 app.get('/products', ProductController.getAll);
 
 app.get('/products/:id', ProductController.getById);
+
+app.put(
+  '/products/:id',
+  withName,
+  nameGreaterThanFour,
+  sameId,
+  withQuantity,
+  quantityIsNotString,
+  ProductController.update,
+);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
