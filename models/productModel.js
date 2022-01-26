@@ -23,7 +23,29 @@ const create = async (name, quantity) => {
   };
 };
 
+const getAll = async () => {
+  const query = 'SELECT * FROM StoreManager.products';
+  const [result] = await connection.execute(query);
+  return result;
+};
+
+const getById = async (idProduct) => {
+  const query = 'SELECT * FROM StoreManager.products WHERE id=?';
+  const [result] = await connection.execute(query, [idProduct]);
+  if (result.length === 0) return null;
+
+  const resultMap = result.map(({ id, name, quantity }) => ({
+    id,
+    name,
+    quantity,
+  }));
+
+  return Object.assign(...resultMap);
+};
+
 module.exports = {
   create,
   findProductByName,
+  getAll,
+  getById,
 };
