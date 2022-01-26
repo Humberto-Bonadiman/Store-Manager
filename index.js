@@ -19,11 +19,11 @@ app.use(bodyParser.json());
 app.post(
   '/products',
   withName,
-/*   nameGreaterThanFour,
+  nameGreaterThanFour,
   differentName,
   withQuantity,
   quantityIsNotString,
-  ProductController.create, */
+  ProductController.create,
 );
 
 // não remova esse endpoint, e para o avaliador funcionar

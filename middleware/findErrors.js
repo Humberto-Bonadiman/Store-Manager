@@ -1,6 +1,6 @@
 const ProductService = require('../services/productService');
 
-const withName = (response, request, next) => {
+const withName = (request, response, next) => {
   const { name } = request.body;
   if (!name) {
     return response.status(400).json({ message: '"name" is required' });
@@ -9,7 +9,7 @@ const withName = (response, request, next) => {
   next();
 };
 
-const nameGreaterThanFour = (response, request, next) => {
+const nameGreaterThanFour = (request, response, next) => {
   const { name } = request.body;
   if (name.length < 5) {
     return response.status(422)
@@ -19,28 +19,27 @@ const nameGreaterThanFour = (response, request, next) => {
   next();
 };
 
-const differentName = async (response, request, next) => {
+const differentName = async (request, response, next) => {
   const { name } = request.body;
-  const productName = await ProductService.findProductByName(name).then((result) => result);
+  const productName = await ProductService.findProductByName(name);
+  if (!productName) return next();
   const sameName = productName.some((result) => result.name === name);
 
   if (sameName) {
     return response.status(409).json({ message: 'Product already exists' });
   }
-
-  next();
 };
 
-const withQuantity = (response, request, next) => {
+const withQuantity = (request, response, next) => {
   const { quantity } = request.body;
-  if (!quantity) {
+  if (quantity === undefined) {
     return response.status(400).json({ message: '"quantity" is required' });
   }
   
   next();
 };
 
-const quantityIsNotString = (response, request, next) => {
+const quantityIsNotString = (request, response, next) => {
   const { quantity } = request.body;
   if (typeof quantity !== 'number' || quantity < 1) {
     return response.status(422)

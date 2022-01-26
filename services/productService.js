@@ -1,11 +1,12 @@
 const ProductModel = require('../models/productModel');
 
-const findProductByName = async (name) => {
+const findProductByName = async (nameToSearch) => {
   try {
-    const response = await ProductModel.findProductByName(name);
+    const response = await ProductModel.findProductByName(nameToSearch);
+    if (!response) return null;
     return response;
   } catch (error) {
-    return error;
+    return console.log(`ProductService ${error}`);
   }
 };
 
