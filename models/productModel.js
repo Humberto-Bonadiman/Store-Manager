@@ -66,12 +66,10 @@ const update = async (name, quantity, parseId) => {
 };
 
 const deleteProduct = async (id) => {
-  const querySelect = 'SELECT * FROM StoreManager.products WHERE id=?';
-  const [result] = await connection.execute(querySelect, [id]);
-  if (result.length === 0) return null;
+  const getId = getById(id);
   const query = 'DELETE FROM StoreManager.products WHERE id=?';
   await connection.execute(query, [id]);
-  return Object.assign(...mapFuction(result));
+  return getId;
 };
 
 module.exports = {
