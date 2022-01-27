@@ -1,7 +1,6 @@
 const connection = require('./connection');
 
 const DEZ = 10;
-
 function mapFuction(resultFromSearch) {
   return resultFromSearch.map(({ id, name, quantity }) => ({
     id,
@@ -66,6 +65,15 @@ const update = async (name, quantity, parseId) => {
   return { id, name, quantity };
 };
 
+const deleteProduct = async (id) => {
+  const querySelect = 'SELECT * FROM StoreManager.products WHERE id=?';
+  const [result] = await connection.execute(querySelect, [id]);
+  if (result.length === 0) return null;
+  const query = 'DELETE FROM StoreManager.products WHERE id=?';
+  await connection.execute(query, [id]);
+  return Object.assign(...mapFuction(result));
+};
+
 module.exports = {
   create,
   findProductByName,
@@ -73,4 +81,5 @@ module.exports = {
   getAll,
   getById,
   update,
+  deleteProduct,
 };
