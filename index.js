@@ -48,7 +48,7 @@ app.put(
 );
 
 app.delete('/products/:id', ProductController.deleteProduct);
-
+// adiciona comentário para dar push
 app.post(
   '/sales',
   validateSales,
