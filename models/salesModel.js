@@ -15,7 +15,7 @@ const register = async (sales) => {
 
   return {
     id: data.insertId,
-    itemSold: sales,
+    itemsSold: sales,
   };
 };
 
