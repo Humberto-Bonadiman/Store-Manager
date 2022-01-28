@@ -13,6 +13,13 @@ const {
   quantityIsNotString,
 } = require('./middleware/findErrors');
 
+const SalesController = require('./controllers/salesController');
+/* const {
+  withProductId,
+  withQuantitySale,
+  quantityIsNotStringSale,
+} = require('./middleware/findErrorsSales'); */
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -42,6 +49,13 @@ app.put(
 );
 
 app.delete('/products/:id', ProductController.deleteProduct);
+
+app.post(
+  '/sales',
+  SalesController.validateSales,
+  SalesController.validadeQuantity,
+  SalesController.register,
+);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
