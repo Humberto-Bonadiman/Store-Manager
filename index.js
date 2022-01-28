@@ -14,11 +14,10 @@ const {
 } = require('./middleware/findErrors');
 
 const SalesController = require('./controllers/salesController');
-/* const {
-  withProductId,
-  withQuantitySale,
-  quantityIsNotStringSale,
-} = require('./middleware/findErrorsSales'); */
+const {
+  validateSales,
+  validadeQuantity,
+} = require('./middleware/findErrorsSales');
 
 const app = express();
 
@@ -52,8 +51,8 @@ app.delete('/products/:id', ProductController.deleteProduct);
 
 app.post(
   '/sales',
-  SalesController.validateSales,
-  SalesController.validadeQuantity,
+  validateSales,
+  validadeQuantity,
   SalesController.register,
 );
 
