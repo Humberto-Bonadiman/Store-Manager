@@ -49,6 +49,8 @@ const getAll = async () => {
   return result;
 };
 
+/* Para usar o Object.assign eu pesquisei no MDN Web Docs
+Fonte: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Object/assign */
 const getById = async (idProduct) => {
   const query = 'SELECT * FROM StoreManager.products WHERE id=?';
   const [result] = await connection.execute(query, [idProduct]);
