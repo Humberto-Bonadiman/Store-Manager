@@ -14,7 +14,20 @@ const getAllSale = async (_req, res) => {
   return res.status(200).json(products);
 };
 
+const getSaleById = async (req, res) => {
+  const { id } = req.params;
+
+  const sale = await SalesService.getById(id);
+
+  if (!sale) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
+
+  return res.status(200).json(sale);
+};
+
 module.exports = {
   register,
   getAllSale,
+  getSaleById,
 };

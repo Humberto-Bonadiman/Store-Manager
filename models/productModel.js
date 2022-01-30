@@ -56,7 +56,6 @@ const getById = async (idProduct) => {
   const [result] = await connection.execute(query, [idProduct]);
   if (result.length === 0) return null;
 
-  console.log(result);
   return Object.assign(...mapFuction(result));
 };
 
