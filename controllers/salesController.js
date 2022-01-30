@@ -26,8 +26,22 @@ const getSaleById = async (req, res) => {
   return res.status(200).json(sale);
 };
 
+const updateRegister = async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+
+  const saleProduct = await SalesService.updateRegister(sale, id);
+
+  if (!saleProduct) {
+    return res.status(404).json({ message: 'Sale not found' });
+  }
+
+  return res.status(200).json(saleProduct);
+};
+
 module.exports = {
   register,
   getAllSale,
   getSaleById,
+  updateRegister,
 };

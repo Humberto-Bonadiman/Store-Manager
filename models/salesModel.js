@@ -1,5 +1,7 @@
 const connection = require('./connection');
 
+const DEZ = 10;
+
 const register = async () => {
   const query = 'INSERT INTO StoreManager.sales VALUES ();';
   const [data] = await connection.execute(query);
@@ -34,9 +36,22 @@ const getSaleById = async (idSale) => {
   return result;
 };
 
+const updateRegister = async (itemUpdated, parseId) => {
+  const productId = itemUpdated[0].product_id;
+  const { quantity } = itemUpdated[0];
+  const query = `UPDATE StoreManager.sales_products
+    SET product_id=?, quantity=?
+    WHERE sale_Id=?`;
+  await connection.execute(query, [productId, quantity, parseId]);
+  const saleId = parseInt(parseId, DEZ);
+  
+  return { saleId, itemUpdated };
+};
+
 module.exports = {
   create,
   getAllSale,
   register,
   getSaleById,
+  updateRegister,
 };

@@ -29,7 +29,6 @@ const validadeQuantity = (req, res, next) => {
 };
 
 module.exports = {
-//  validateExistProduct,
   validateSales,
   validadeQuantity,
 };
