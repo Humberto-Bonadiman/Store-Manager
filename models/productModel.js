@@ -31,7 +31,7 @@ const findProductById = async (idToSearch) => {
     console.log(`ProductModel id ${error}`);
   }
 };
-//
+
 const create = async (name, quantity) => {
   const query = 'INSERT INTO StoreManager.products (name, quantity) VALUES (?, ?)';
   const [result] = await connection.execute(query, [name, quantity]);
@@ -56,6 +56,7 @@ const getById = async (idProduct) => {
   const [result] = await connection.execute(query, [idProduct]);
   if (result.length === 0) return null;
 
+  console.log(result);
   return Object.assign(...mapFuction(result));
 };
 

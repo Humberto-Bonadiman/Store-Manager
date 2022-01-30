@@ -1,24 +1,30 @@
 const connection = require('./connection');
 
-/* Nesta paarte eu consultei o repositório do Luiz Gustavo
-Fonte: https://github.com/tryber/sd-014-b-store-manager/pull/60/files */
-const register = async (sales) => {
+const register = async () => {
   const query = 'INSERT INTO StoreManager.sales VALUES ();';
   const [data] = await connection.execute(query);
 
-  sales.forEach(async (sale) => {
-    await connection.execute(
-      'INSERT INTO StoreManager.sales_products VALUES (?, ?, ?);',
-      [data.insertId, sale.product_id, sale.quantity],
-      );
-  });
+  return data.insertId;
+};
 
-  return {
-    id: data.insertId,
-    itemsSold: sales,
-  };
+const create = async (colum1, colum2, colum3) => {
+  const query = `INSERT INTO StoreManager.sales_products
+  (sale_id, product_id, quantity) VALUES (?, ?, ?)`;
+  const sale = await connection.execute(query, [colum1, colum2, colum3]);
+  return sale;
+};
+
+const getAllSale = async () => {
+  const query = `SELECT a.sale_Id AS saleId, b.date, a.product_id, a.quantity
+  FROM StoreManager.sales_products AS a
+  INNER JOIN sales AS b
+  ON a.sale_Id = b.id`;
+  const [result] = await connection.execute(query);
+  return result;
 };
 
 module.exports = {
+  create,
+  getAllSale,
   register,
 };

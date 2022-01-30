@@ -17,6 +17,7 @@ const SalesController = require('./controllers/salesController');
 const {
   validateSales,
   validadeQuantity,
+//  validateExistProduct,
 } = require('./middleware/findErrorsSales');
 
 const app = express();
@@ -51,10 +52,13 @@ app.delete('/products/:id', ProductController.deleteProduct);
 
 app.post(
   '/sales',
+//  validateExistProduct,
   validateSales,
   validadeQuantity,
   SalesController.register,
 );
+
+app.get('/sales', SalesController.getAllSale);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
