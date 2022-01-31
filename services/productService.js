@@ -22,6 +22,8 @@ const findProductById = async (idToSearch) => {
 
 const create = async ({ name, quantity }) => {
   const product = await ProductModel.create(name, quantity);
+
+  if (!product) return null;
   
   return {
     id: product.id,

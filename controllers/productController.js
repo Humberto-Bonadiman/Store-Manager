@@ -1,28 +1,28 @@
 const ProductService = require('../services/productService');
 
-const create = async (req, res) => {
-  const { name, quantity } = req.body;
+const create = async (request, response) => {
+  const { name, quantity } = request.body;
 
   const product = await ProductService.create({ name, quantity });
 
-  return res.status(201).json(product);
+  return response.status(201).json(product);
 };
 
-const getAll = async (_req, res) => {
+const getAll = async (_req, response) => {
   const products = await ProductService.getAll();
-  return res.status(200).json(products);
+  return response.status(200).json(products);
 };
 
-const getById = async (req, res) => {
-  const { id } = req.params;
+const getById = async (request, response) => {
+  const { id } = request.params;
 
   const product = await ProductService.getById(id);
 
   if (!product) {
-    return res.status(404).json({ message: 'Product not found' });
+    return response.status(404).json({ message: 'Product not found' });
   }
 
-  return res.status(200).json(product);
+  return response.status(200).json(product);
 };
 
 const update = async (req, res) => {

@@ -1,5 +1,3 @@
-// const productService = require('../services/productService');
-
 const validateSales = (req, res, next) => {
   const sales = req.body;
   const forEverySales = sales.every((sale) => sale.product_id !== undefined);
