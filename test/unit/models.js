@@ -3,7 +3,7 @@ const { expect } = require('chai');
 
 const connection = require('../../models/connection');
 const productModel = require('../../models/productModel');
-// const salesModel = require('../../models/salesModel');
+const salesModel = require('../../models/salesModel');
 
 describe('Insere um novo produto no BD', () => {
   const addProduct = {
@@ -31,8 +31,8 @@ describe('Insere um novo produto no BD', () => {
       const response = await productModel.create(addProduct);
 
       expect(response).to.have.a.property('id');
-    })
-  })
+    });
+  });
 });
 
 describe('Busca todos os produtos no banco de dados', () => {
@@ -94,7 +94,7 @@ describe('Busca todos os produtos no banco de dados', () => {
       const response = await productModel.getAll();
 
       response.forEach((product) => expect(product).to.include.all.keys('id', 'name', 'quantity'));
-    })
+    });
   });
 });
 
@@ -224,4 +224,47 @@ describe('Deleta um produto no banco de dados através do id', () => {
       expect(response).to.include.all.keys('id', 'name', 'quantity');
     });
   }); 
+});
+
+describe('Mostra todas as vendas no banco de dados', () => {
+  describe('quando existem vendas no banco de dados', () => {
+    before(() => {
+      sinon.stub(salesModel, 'getAllSale')
+        .resolves([{
+          saleId: 1,
+          date: '2022-02-01T01:24:26.000Z',
+          product_id: 1,
+          quantity: 20
+        },
+        {
+          saleId: 2,
+          date: "2022-02-01T01:32:25.000Z",
+          product_id: 2,
+          quantity: 20
+      }]);
+    });
+
+    after(() => {
+      salesModel.getAllSale.restore();
+    });
+
+    it('retorna um array', async () => {
+      const response = await salesModel.getAllSale();
+
+      expect(response).to.be.an('array');
+    });
+
+    it('retorna um array não vazio', async () => {
+      const response = await salesModel.getAllSale();
+
+      expect(response).not.to.be.empty;
+    });
+
+    it('retorna um array com um objeto contendo as seguintes propriedades', async () => {
+      const response = await salesModel.getAllSale();
+
+      response.forEach((product) => expect(product)
+        .to.include.all.keys('saleId', 'date', 'product_id', 'quantity'));
+    });
+  });
 });

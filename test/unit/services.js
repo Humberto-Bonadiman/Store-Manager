@@ -3,25 +3,11 @@ const { expect } = require('chai');
 
 const productModel = require('../../models/productModel');
 const productService = require('../../services/productService');
+const salesModel = require('../../models/salesModel');
+const salesService = require('../../services/salesService');
 const connection = require('../../models/connection');
 
 describe('Insere um novo produto no BD', () => {
-/*   describe('quando o payload informado não é válido', () => {
-    const payloadProduct = {};
-
-    it('retorna um boolean', async () => {
-      const response = await productService.create(payloadProduct);
-
-      expect(response).to.be.a('boolean');
-    });
-
-    it('o boolean contém "false"', async () => {
-      const response = await productService.create(payloadProduct);
-
-      expect(response).to.be.equal(false);
-    });
-  }); */
-
   describe('quando é inserido com sucesso', () => {
     const addProduct = {
       name: 'Notebook',
@@ -66,13 +52,13 @@ describe('Busca todos os produtos no banco de dados pelo Service', () => {
     });
 
     it('retorna um array', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
 
       expect(response).to.be.an('array');
     });
 
     it('retorna um array vazio', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
       expect(response).to.be.empty;
     });
   });
@@ -97,22 +83,22 @@ describe('Busca todos os produtos no banco de dados pelo Service', () => {
     });
 
     it('retorna um array', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
 
       expect(response).to.be.an('array');
     });
 
     it('retorna um array não vazio', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
 
       expect(response).not.to.be.empty;
     });
 
     it('retorna um array com um objeto contendo as seguintes propriedades', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
 
       response.forEach((product) => expect(product).to.include.all.keys('id', 'name', 'quantity'));
-    })
+    });
   });
 });
 
@@ -276,6 +262,36 @@ describe('Deleta um produto no banco de dados conforme id informado', () => {
       const response = await productService.deleteProduct(1);
 
       expect(response).to.include.all.keys('id', 'name', 'quantity');
+    });
+  });
+});
+
+describe('Busca todas as vendas no banco de dados pelo Service', () => {
+  describe('quando existem vendas no banco de dados', () => {
+    before(() => {
+      sinon.stub(salesModel, 'getAllSale')
+        .resolves([{
+          saleId: 1,
+          date: '2022-02-01T01:24:26.000Z',
+          product_id: 1,
+          quantity: 20
+        },
+        {
+          saleId: 2,
+          date: "2022-02-01T01:32:25.000Z",
+          product_id: 2,
+          quantity: 20
+      }]);
+    });
+
+    after(() => {
+      salesModel.getAllSale.restore();
+    });
+
+    it('retorna um array', async () => {
+      const response = await salesService.getAllSale();
+
+      expect(response).to.be.an('array');
     });
   });
 });
