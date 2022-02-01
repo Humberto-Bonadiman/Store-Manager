@@ -1,4 +1,4 @@
-/* const sinon = require('sinon');
+const sinon = require('sinon');
 const { expect } = require('chai');
 const { describe } = require("mocha");
 
@@ -234,7 +234,7 @@ describe('Ao chamar o controller de update', () => {
   });
 });
 
-describe('Ao chamar o controller de deleteProduct', () => {
+/* describe('Ao chamar o controller de deleteProduct', () => {
   describe('quando não houver um produto com o id informado', () => {
     const response = {};
     const request = {};
