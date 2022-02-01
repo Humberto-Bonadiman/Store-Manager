@@ -25,17 +25,17 @@ const getById = async (request, response) => {
   return response.status(200).json(product);
 };
 
-const update = async (req, res) => {
-  const { id } = req.params;
-  const { name, quantity } = req.body;
+const update = async (request, response) => {
+  const { id } = request.params;
+  const { name, quantity } = request.body;
 
   const product = await ProductService.update(name, quantity, id);
 
   if (!product) {
-    return res.status(404).json({ message: 'Product not found' });
+    return response.status(404).json({ message: 'Product not found' });
   }
 
-  return res.status(200).json(product);
+  return response.status(200).json(product);
 };
 
 const deleteProduct = async (req, res) => {

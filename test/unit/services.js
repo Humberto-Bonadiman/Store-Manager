@@ -165,6 +165,117 @@ describe('Busca apenas um produto no banco de dados', () => {
       const response = await productService.getById(1);
 
       expect(response).to.include.all.keys('id', 'name', 'quantity');
-    })
+    });
+  });
+});
+
+describe('Atualiza um produto no banco de dados conforme id informado', () => {
+  describe('quando não existe um produto com o id informado', () => {
+    before(async () => {
+      const execute = [[]];
+  
+      sinon.stub(connection, 'execute').resolves(execute);
+    });
+  
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    it('retorna null', async () => {
+      const response = await productService.deleteProduct();
+
+      expect(response).to.be.equal(null);
+    });
+  });
+
+  describe('quando existe um produto com o id informado', () => {
+    before(async () => {
+      const execute = {
+        id: 1,
+        name: 'Notebook',
+        quantity: 20
+      };
+  
+      sinon.stub(connection, 'execute').resolves(execute);
+    });
+  
+    after(async () => {
+      connection.execute.restore();
+    });
+
+    const newId = 1;
+    const newName = 'Video Game';
+    const newQuantity = 50;
+
+    it('retorna um objeto', async () => {
+      const response = await productService.update(newId, newName, newQuantity);
+
+      expect(response).to.be.an('object');
+    });
+
+    it('o objeto não está vazio', async () => {
+      const response = await productService.update(newId, newName, newQuantity);
+
+      expect(response).to.be.not.empty;
+    });
+
+    it('tal objeto possui as propriedades "id", "name", "quantity"', async () => {
+      const response = await productService.update(newId, newName, newQuantity);
+
+      expect(response).to.include.all.keys('id', 'name', 'quantity');
+    });
+  });
+});
+
+describe('Deleta um produto no banco de dados conforme id informado', () => {
+  before(async () => {
+    const execute = [[]];
+
+    sinon.stub(connection, 'execute').resolves(execute);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  describe('quando não existe um produto com o id informado', () => {
+    it('retorna null', async () => {
+      const response = await productService.deleteProduct();
+
+      expect(response).to.be.equal(null);
+    });
+  });
+
+  describe('quando existe um produto com o id informado', () => {
+    before(() => {
+      sinon.stub(productModel, 'deleteProduct')
+        .resolves({
+          id: 1,
+          name: 'Notebook',
+          quantity: 20          
+        })
+    });
+
+    after(() => {
+      productModel.deleteProduct.restore();;
+    });
+
+    it('retorna um objeto', async () => {
+      const response = await productService.deleteProduct(1);
+
+      expect(response).to.be.an('object');
+    });
+
+    it('o objeto não está vazio', async () => {
+      const response = await productService.deleteProduct(1);
+
+      expect(response).to.be.not.empty;
+    });
+
+    it('tal objeto possui as propriedades "id", "name", "quantity"', async () => {
+      const response = await productService.deleteProduct(1);
+
+      expect(response).to.include.all.keys('id', 'name', 'quantity');
+    });
   });
 });

@@ -4,7 +4,6 @@ const { describe } = require("mocha");
 
 const productService = require('../../services/productService');
 const productController = require('../../controllers/productController');
-const { response } = require('express');
 
 describe('Ao chamar o controller de create', () => {
 /*   describe('quando o payload informado não é válido', () => {
@@ -190,6 +189,112 @@ describe('Ao chamar o controller de getById', () => {
 
     it('é chamado o método "json" passando um objeto', async () => {
       await productController.getById(request, response);
+
+      expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
+    });
+  });
+});
+
+describe('Ao chamar o controller de update', () => {
+  describe('quando não houver o produto com o id informado', () => {
+    const response = {};
+    const request = {};
+
+    before(() => {
+      request.params = {};
+      request.body = {};
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productService, 'update').resolves(false);
+    });
+
+    after(() => {
+      productService.update.restore();
+    });
+
+    it('é chamado o status com o código 404', async () => {
+      await productController.update(request, response);
+
+      expect(response.status.calledWith(404)).to.be.equal(true);
+    });
+  });
+
+  describe('quando houver o produto com id informado', () => {
+    const request = {};
+    const response = {};
+  
+    before(() => {
+      request.params = {
+        id: 1
+      };
+
+      request.body = {
+        name: 'Notebook',
+        quantity: 50
+      };
+
+      const idUpdate = 1;
+      const nameUpdate = 'Computador';
+      const quantityUpdate = 50;
+  
+      response.status = sinon.stub()
+        .returns(response);
+      response.json = sinon.stub()
+        .returns();
+  
+      sinon.stub(productService, 'update')
+        .resolves(nameUpdate, quantityUpdate, idUpdate);
+    });
+  
+    after(() => {
+      productService.update.restore();
+    });
+
+    it('é chamado o método "status" passando o código 200', async () => {
+      await productController.update(request, response);
+  
+      expect(response.status.calledWith(200)).to.be.equal(true);
+    });
+  
+    it('é chamado o método "json"', async () => {
+      await productController.update(request, response);
+  
+      expect(response.json.called).to.be.equal(true);
+    });
+  });
+});
+
+describe('Ao chamar o controller de deleteProduct', () => {
+  describe('quando não houver um produto com o id informado', () => {
+    const response = {};
+    const request = {};
+
+    before(() => {
+      request.params = {
+        id: 1
+      };
+    });
+
+    response.status = sinon.stub().returns(response);
+    response.json = sinon.stub().returns();
+
+    sinon.stub(productService, 'deleteProduct')
+      .resolves(null);
+    
+    after(() => {
+      productService.deleteProduct.restore();
+    });
+
+    it('é chamado o "status" passando 404', async () => {
+      await productController.deleteProduct(request, response);
+
+      expect(response.status.calledWith(404)).to.be.equal(true);
+    });
+
+    it('é chamado o método "json"', async () => {
+      await productController.deleteProduct(request, response);
 
       expect(response.json.calledWith(sinon.match.object)).to.be.equal(true);
     });
