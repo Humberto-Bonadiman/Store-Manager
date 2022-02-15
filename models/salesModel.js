@@ -48,10 +48,18 @@ const updateRegister = async (itemUpdated, parseId) => {
   return { saleId, itemUpdated };
 };
 
+const deleteSale = async (id) => {
+  const query = 'DELETE FROM StoreManager.sales_products WHERE sale_id=?';
+  const [deletedSale] = await connection.execute(query, [id]);
+
+  return deletedSale;
+};
+
 module.exports = {
   create,
   getAllSale,
   register,
   getSaleById,
   updateRegister,
+  deleteSale,
 };

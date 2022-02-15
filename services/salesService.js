@@ -34,9 +34,17 @@ const updateRegister = async (itemUpdated, id) => {
   return sale;
 };
 
+const deleteSale = async (id) => {
+  const sale = await salesModel.deleteSale(id);
+  if (!sale) return null;
+
+  return sale;
+};
+
 module.exports = {
   register,
   getAllSale,
   getById,
   updateRegister,
+  deleteSale,
 };

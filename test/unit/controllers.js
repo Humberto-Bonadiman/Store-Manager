@@ -233,38 +233,3 @@ describe('Ao chamar o controller de update', () => {
     });
   });
 });
-
-/* describe('Ao chamar o controller de deleteProduct', () => {
-  describe('quando não houver um produto com o id informado', () => {
-    const response = {};
-    const request = {};
-
-    before(() => {
-      request.params = {
-        id: 1
-      };
-    });
-
-    response.status = sinon.stub().returns(response);
-    response.json = sinon.stub().returns();
-
-    sinon.stub(productService, 'deleteProduct')
-      .resolves(null);
-    
-    after(() => {
-      productService.deleteProduct.restore();
-    });
-
-    it('é chamado o "status" passando 404', async () => {
-      await productController.deleteProduct(request, response);
-
-      expect(response.status.calledWith(404)).to.be.equal(true);
-    });
-
-    it('é chamado o método "json"', async () => {
-      await productController.deleteProduct(request, response);
-
-      expect(response.json.called).to.be.equal(true);
-    });
-  });
-}); */
